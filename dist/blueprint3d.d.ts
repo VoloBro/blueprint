@@ -673,6 +673,7 @@ declare module BP3D.Model {
         };
         loadFloorplan(floorplan: any): void;
         drawItemBox(item: Items.Item): void;
+        clearItems(): void;
         getFloorTexture(uuid: string): any;
         setFloorTexture(uuid: string, url: string, scale: number): void;
         /** clear out obsolete floor textures */

@@ -264,6 +264,10 @@ module BP3D.Model {
       //this.roomLoadedCallbacks.fire();
     }
 
+    public clearItems() {
+      this.items = [];
+    }
+
     public getFloorTexture(uuid: string) {
       if (uuid in this.floorTextures) {
         return this.floorTextures[uuid];

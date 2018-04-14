@@ -1788,6 +1788,9 @@ var BP3D;
                 //this.items = item;
                 //this.roomLoadedCallbacks.fire();
             };
+            Floorplan.prototype.clearItems = function () {
+                this.items = [];
+            };
             Floorplan.prototype.getFloorTexture = function (uuid) {
                 if (uuid in this.floorTextures) {
                     return this.floorTextures[uuid];
@@ -2591,6 +2594,7 @@ var BP3D;
             Model.prototype.newRoom = function (floorplan, items) {
                 var _this = this;
                 this.scene.clearItems();
+                this.floorplan.clearItems();
                 this.scene.itemLoadedCallbacks.add(function (a) {
                     _this.floorplan.drawItemBox(a);
                     //console.log(a)

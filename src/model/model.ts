@@ -83,6 +83,7 @@ module BP3D.Model {
 
     private newRoom(floorplan: string, items) {
       this.scene.clearItems();
+      this.floorplan.clearItems();
       this.scene.itemLoadedCallbacks.add((a) => {
         this.floorplan.drawItemBox(a);
         //console.log(a)

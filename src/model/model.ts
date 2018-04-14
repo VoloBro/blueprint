@@ -83,7 +83,7 @@ module BP3D.Model {
 
     private newRoom(floorplan: string, items) {
       this.scene.clearItems();
-      this.floorplan.loadFloorplan(floorplan);
+      this.floorplan.loadFloorplan(floorplan, items);
       items.forEach((item) => {
         var position = new THREE.Vector3(
           item.xpos, item.ypos, item.zpos);
@@ -107,9 +107,6 @@ module BP3D.Model {
           scale,
           item.fixed);
       });
-      console.log(">>>>>>>>>> ITEMS AFTER <<<<<<<<<<<<");
-      console.log(this.scene.getItems());
-      this.floorplan.drawItemsBoxes(this.scene.getItems());
     }
   }
 }

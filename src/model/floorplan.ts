@@ -18,7 +18,7 @@ module BP3D.Model {
     /** */
     private walls: Wall[] = [];
 
-    private items: Items.Item[];
+    private items;
 
     /** */
     private corners: Corner[] = [];
@@ -224,8 +224,9 @@ module BP3D.Model {
       return floorplan;
     }
 
-    public loadFloorplan(floorplan) {
+    public loadFloorplan(floorplan, roomItems) {
       this.reset();
+      this.items = roomItems;
 
       var corners = {};
       if (floorplan == null || !('corners' in floorplan) || !('walls' in floorplan)) {

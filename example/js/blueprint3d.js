@@ -1753,8 +1753,9 @@ var BP3D;
                 floorplan.newFloorTextures = this.floorTextures;
                 return floorplan;
             };
-            Floorplan.prototype.loadFloorplan = function (floorplan) {
+            Floorplan.prototype.loadFloorplan = function (floorplan, roomItems) {
                 this.reset();
+                this.items = roomItems;
                 var corners = {};
                 if (floorplan == null || !('corners' in floorplan) || !('walls' in floorplan)) {
                     return;
@@ -2586,7 +2587,7 @@ var BP3D;
             Model.prototype.newRoom = function (floorplan, items) {
                 var _this = this;
                 this.scene.clearItems();
-                this.floorplan.loadFloorplan(floorplan);
+                this.floorplan.loadFloorplan(floorplan, items);
                 items.forEach(function (item) {
                     var position = new THREE.Vector3(item.xpos, item.ypos, item.zpos);
                     var metadata = {
@@ -2598,9 +2599,6 @@ var BP3D;
                     var scale = new THREE.Vector3(item.scale_x, item.scale_y, item.scale_z);
                     _this.scene.addItem(item.item_type, item.model_url, metadata, position, item.rotation, scale, item.fixed);
                 });
-                console.log(">>>>>>>>>> ITEMS AFTER <<<<<<<<<<<<");
-                console.log(this.scene.getItems());
-                this.floorplan.drawItemsBoxes(this.scene.getItems());
             };
             return Model;
         })();
@@ -2695,8 +2693,10 @@ var BP3D;
                 });
                 var loadedItems = this.floorplan.getItems();
                 if (loadedItems) {
-                    loadedItems.forEach(function (item) {
-                        _this.drawRectangle(_this.viewmodel.convertX(item.position.x), _this.viewmodel.convertY(item.position.z));
+                    loadedItems.forEach(function (forItem) {
+                        var x = _this.viewmodel.convertX(forItem.xpos);
+                        var y = _this.viewmodel.convertY(forItem.zpos);
+                        _this.drawRectangle(x, y);
                     });
                 }
             };

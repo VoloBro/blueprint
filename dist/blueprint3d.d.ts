@@ -657,7 +657,7 @@ declare module BP3D.Model {
         /** Gets the walls. */
         getWalls(): Wall[];
         /** Gets the items like furniture, window, etc. */
-        getItems(): Items.Item[];
+        getItems(): any;
         /** Gets the corners. */
         getCorners(): Corner[];
         /** Gets the rooms. */
@@ -671,7 +671,7 @@ declare module BP3D.Model {
             floorTextures: {};
             newFloorTextures: {};
         };
-        loadFloorplan(floorplan: any): void;
+        loadFloorplan(floorplan: any, roomItems: any): void;
         drawItemsBoxes(loadedItems: Items.Item[]): void;
         getFloorTexture(uuid: string): any;
         setFloorTexture(uuid: string, url: string, scale: number): void;

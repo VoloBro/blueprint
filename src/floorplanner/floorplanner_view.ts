@@ -103,8 +103,10 @@ module BP3D.Floorplanner {
 
       var loadedItems = this.floorplan.getItems();
       if (loadedItems){
-        loadedItems.forEach((item) =>{
-          this.drawRectangle(this.viewmodel.convertX(item.position.x), this.viewmodel.convertY(item.position.z))
+        loadedItems.forEach((forItem) =>{
+          var x = this.viewmodel.convertX(forItem.xpos);
+          var y = this.viewmodel.convertY(forItem.zpos);
+          this.drawRectangle(x, y);
         })
       }
     }

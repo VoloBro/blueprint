@@ -1,3 +1,3 @@
 # blueprint
 
-http://localhost:5001/blueprint/blueprint/example/#
+https://volobro.github.io/blueprint/example/#

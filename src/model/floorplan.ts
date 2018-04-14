@@ -18,7 +18,7 @@ module BP3D.Model {
     /** */
     private walls: Wall[] = [];
 
-    private items;
+    private items: Items.Item[] = [];
 
     /** */
     private corners: Corner[] = [];
@@ -224,9 +224,8 @@ module BP3D.Model {
       return floorplan;
     }
 
-    public loadFloorplan(floorplan, roomItems) {
+    public loadFloorplan(floorplan) {
       this.reset();
-      this.items = roomItems;
 
       var corners = {};
       if (floorplan == null || !('corners' in floorplan) || !('walls' in floorplan)) {
@@ -256,10 +255,13 @@ module BP3D.Model {
       this.roomLoadedCallbacks.fire();
     }
 
-    public drawItemsBoxes(loadedItems:Items.Item[]){
-      this.items = loadedItems;
-
+    public drawItemBox(item :Items.Item){
+      this.items.push(item);
+      // this.items.a = item;
+      //console.log(`Draw item box: ${item}`)
       this.roomLoadedCallbacks.fire();
+      //this.items = item;
+      //this.roomLoadedCallbacks.fire();
     }
 
     public getFloorTexture(uuid: string) {

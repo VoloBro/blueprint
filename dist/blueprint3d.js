@@ -1581,6 +1581,7 @@ var BP3D;
             function Floorplan() {
                 /** */
                 this.walls = [];
+                this.items = [];
                 /** */
                 this.corners = [];
                 /** */
@@ -1753,9 +1754,8 @@ var BP3D;
                 floorplan.newFloorTextures = this.floorTextures;
                 return floorplan;
             };
-            Floorplan.prototype.loadFloorplan = function (floorplan, roomItems) {
+            Floorplan.prototype.loadFloorplan = function (floorplan) {
                 this.reset();
-                this.items = roomItems;
                 var corners = {};
                 if (floorplan == null || !('corners' in floorplan) || !('walls' in floorplan)) {
                     return;
@@ -1780,9 +1780,13 @@ var BP3D;
                 this.update();
                 this.roomLoadedCallbacks.fire();
             };
-            Floorplan.prototype.drawItemsBoxes = function (loadedItems) {
-                this.items = loadedItems;
+            Floorplan.prototype.drawItemBox = function (item) {
+                this.items.push(item);
+                // this.items.a = item;
+                //console.log(`Draw item box: ${item}`)
                 this.roomLoadedCallbacks.fire();
+                //this.items = item;
+                //this.roomLoadedCallbacks.fire();
             };
             Floorplan.prototype.getFloorTexture = function (uuid) {
                 if (uuid in this.floorTextures) {
@@ -2513,7 +2517,7 @@ var BP3D;
                     scope.itemLoadedCallbacks.fire(item);
                 };
                 this.itemLoadingCallbacks.fire();
-                this.loader.load(fileName, loaderCallback, undefined // TODO_Ekki 
+                this.loader.load(fileName, loaderCallback, undefined // TODO_Ekki
                 );
             };
             return Scene;
@@ -2587,7 +2591,11 @@ var BP3D;
             Model.prototype.newRoom = function (floorplan, items) {
                 var _this = this;
                 this.scene.clearItems();
-                this.floorplan.loadFloorplan(floorplan, items);
+                this.scene.itemLoadedCallbacks.add(function (a) {
+                    _this.floorplan.drawItemBox(a);
+                    //console.log(a)
+                });
+                this.floorplan.loadFloorplan(floorplan);
                 items.forEach(function (item) {
                     var position = new THREE.Vector3(item.xpos, item.ypos, item.zpos);
                     var metadata = {
@@ -2653,6 +2661,7 @@ var BP3D;
                 this.floorplan = floorplan;
                 this.viewmodel = viewmodel;
                 this.canvas = canvas;
+                // console.log(new Error("DDD").stack);
                 this.canvasElement = document.getElementById(canvas);
                 this.context = this.canvasElement.getContext('2d');
                 var scope = this;
@@ -2691,14 +2700,30 @@ var BP3D;
                 this.floorplan.getWalls().forEach(function (wall) {
                     _this.drawWallLabels(wall);
                 });
-                var loadedItems = this.floorplan.getItems();
-                if (loadedItems) {
-                    loadedItems.forEach(function (forItem) {
-                        var x = _this.viewmodel.convertX(forItem.xpos);
-                        var y = _this.viewmodel.convertY(forItem.zpos);
-                        _this.drawRectangle(x, y);
+                var items = this.floorplan.getItems();
+                if (items) {
+                    items.forEach(function (_item) {
+                        var x, y, w, h;
+                        var halfSize = _item.halfSize;
+                        var halfX = halfSize.x / 2;
+                        var halfY = halfSize.z / 2;
+                        x = _this.viewmodel.convertX(_item.position.x);
+                        y = _this.viewmodel.convertY(_item.position.z);
+                        x = x - halfX;
+                        y = y - halfY;
+                        w = halfX * 2;
+                        h = halfY * 2;
+                        _this.drawRectangle(x, y, w, h);
                     });
                 }
+                // var loadedItems = this.floorplan.getItems();
+                // if (loadedItems){
+                //   loadedItems.forEach((forItem) =>{
+                //     var x = this.viewmodel.convertX(forItem.xpos);
+                //     var y = this.viewmodel.convertY(forItem.zpos);
+                //     this.drawRectangle(x, y);
+                //   })
+                // }
             };
             /** */
             FloorplannerView.prototype.drawWallLabels = function (wall) {
@@ -2718,9 +2743,9 @@ var BP3D;
                     this.drawEdgeLabel(wall.frontEdge);
                 }
             };
-            FloorplannerView.prototype.drawRectangle = function (x, y) {
+            FloorplannerView.prototype.drawRectangle = function (x, y, w, h) {
                 this.context.fillStyle = "#FF0000";
-                this.context.fillRect(x, y, 10, 10);
+                this.context.fillRect(x, y, w, h);
                 this.context.stroke();
             };
             /** */

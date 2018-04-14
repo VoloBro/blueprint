@@ -83,7 +83,12 @@ module BP3D.Model {
 
     private newRoom(floorplan: string, items) {
       this.scene.clearItems();
-      this.floorplan.loadFloorplan(floorplan, items);
+      this.scene.itemLoadedCallbacks.add((a) => {
+        this.floorplan.drawItemBox(a);
+        //console.log(a)
+      });
+
+      this.floorplan.loadFloorplan(floorplan);
       items.forEach((item) => {
         var position = new THREE.Vector3(
           item.xpos, item.ypos, item.zpos);

@@ -10,7 +10,7 @@ module BP3D.Model {
   export class Scene {
 
     /** The associated ThreeJS scene. */
-    private scene: THREE.Scene;
+    public scene: THREE.Scene;
 
     /** */
     private items: Items.Item[] = [];
@@ -25,7 +25,7 @@ module BP3D.Model {
     private itemLoadingCallbacks = $.Callbacks();
 
     /** Item */
-    private itemLoadedCallbacks = $.Callbacks();
+    public itemLoadedCallbacks = $.Callbacks();
 
     /** Item */
     private itemRemovedCallbacks = $.Callbacks();
@@ -136,7 +136,7 @@ module BP3D.Model {
       this.loader.load(
         fileName,
         loaderCallback,
-        undefined // TODO_Ekki 
+        undefined // TODO_Ekki
       );
     }
   }

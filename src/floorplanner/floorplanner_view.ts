@@ -54,6 +54,7 @@ module BP3D.Floorplanner {
 
     /** */
     constructor(private floorplan: Model.Floorplan, private viewmodel: Floorplanner, private canvas: string) {
+      // console.log(new Error("DDD").stack);
       this.canvasElement = <HTMLCanvasElement>document.getElementById(canvas);
       this.context = this.canvasElement.getContext('2d');
 
@@ -101,14 +102,41 @@ module BP3D.Floorplanner {
         this.drawWallLabels(wall);
       });
 
-      var loadedItems = this.floorplan.getItems();
-      if (loadedItems){
-        loadedItems.forEach((forItem) =>{
-          var x = this.viewmodel.convertX(forItem.xpos);
-          var y = this.viewmodel.convertY(forItem.zpos);
-          this.drawRectangle(x, y);
+      let items = this.floorplan.getItems();
+      if (items){
+        items.forEach((_item)=>{
+          let x,y,w,h
+          let halfSize : THREE.Vector3 = _item.halfSize;
+          let halfX = halfSize.x / 2;
+          let halfY = halfSize.z / 2;
+
+          x = this.viewmodel.convertX(_item.position.x);
+          y = this.viewmodel.convertY(_item.position.z);
+          x = x - halfX;
+          y = y - halfY;
+
+          w = halfX * 2;
+          h = halfY * 2;
+          this.drawRectangle(x, y, w, h);
         })
+
+
+
+        // var x = this.viewmodel.convertX(forItem.xpos);
+        // var y = this.viewmodel.convertY(forItem.zpos);
+        // this.drawRectangle(x, y);
+
+        // console.log(this.floorplan.item);
       }
+
+      // var loadedItems = this.floorplan.getItems();
+      // if (loadedItems){
+      //   loadedItems.forEach((forItem) =>{
+      //     var x = this.viewmodel.convertX(forItem.xpos);
+      //     var y = this.viewmodel.convertY(forItem.zpos);
+      //     this.drawRectangle(x, y);
+      //   })
+      // }
     }
 
     /** */
@@ -127,9 +155,9 @@ module BP3D.Floorplanner {
       }
     }
 
-    private drawRectangle(x: number, y: number){
+    private drawRectangle(x: number, y: number, w: number, h: number){
       this.context.fillStyle="#FF0000";
-      this.context.fillRect(x, y, 10, 10);
+      this.context.fillRect(x, y, w, h);
       this.context.stroke();
     }
 

@@ -169,7 +169,7 @@ declare module BP3D.Items {
         /** dragging */
         private dragOffset;
         /** */
-        protected halfSize: THREE.Vector3;
+        halfSize: THREE.Vector3;
         /** Constructs an item.
          * @param model TODO
          * @param metadata TODO
@@ -657,7 +657,7 @@ declare module BP3D.Model {
         /** Gets the walls. */
         getWalls(): Wall[];
         /** Gets the items like furniture, window, etc. */
-        getItems(): any;
+        getItems(): Items.Item[];
         /** Gets the corners. */
         getCorners(): Corner[];
         /** Gets the rooms. */
@@ -671,8 +671,8 @@ declare module BP3D.Model {
             floorTextures: {};
             newFloorTextures: {};
         };
-        loadFloorplan(floorplan: any, roomItems: any): void;
-        drawItemsBoxes(loadedItems: Items.Item[]): void;
+        loadFloorplan(floorplan: any): void;
+        drawItemBox(item: Items.Item): void;
         getFloorTexture(uuid: string): any;
         setFloorTexture(uuid: string, url: string, scale: number): void;
         /** clear out obsolete floor textures */
@@ -803,7 +803,7 @@ declare module BP3D.Model {
         private model;
         private textureDir;
         /** The associated ThreeJS scene. */
-        private scene;
+        scene: THREE.Scene;
         /** */
         private items;
         /** */
@@ -813,7 +813,7 @@ declare module BP3D.Model {
         /** */
         private itemLoadingCallbacks;
         /** Item */
-        private itemLoadedCallbacks;
+        itemLoadedCallbacks: JQueryCallback;
         /** Item */
         private itemRemovedCallbacks;
         /**
@@ -916,7 +916,7 @@ declare module BP3D.Floorplanner {
         draw(): void;
         /** */
         private drawWallLabels(wall);
-        private drawRectangle(x, y);
+        private drawRectangle(x, y, w, h);
         /** */
         private drawWall(wall);
         /** */

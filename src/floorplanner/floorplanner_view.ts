@@ -107,7 +107,7 @@ module BP3D.Floorplanner {
       if (items){
 
         items.forEach((_item)=>{
-          let x,y,w,h
+          let x,y,w,h,degree;
           let halfSize : THREE.Vector3 = _item.halfSize;
           let halfX = halfSize.x / 2;
           let halfY = halfSize.z / 2;
@@ -119,7 +119,11 @@ module BP3D.Floorplanner {
 
           w = halfX * 2;
           h = halfY * 2;
-          this.drawRectangle(x, y, w, h);
+          
+          //get item angle
+          degree = _item.rotation.y * 180 / Math.PI;
+
+          this.drawRectangle(x, y, w, h, degree);
         })
       };
     }
@@ -140,10 +144,18 @@ module BP3D.Floorplanner {
       }
     }
 
-    private drawRectangle(x: number, y: number, w: number, h: number){
+    private drawRectangle(x: number, y: number, w: number, h: number, degree: number){
+      this.context.save()
       this.context.fillStyle="#FF0000";
-      this.context.fillRect(x, y, w, h);
+      //setting canvas center to center of rect
+      this.context.translate(x + (w / 2), y + (h / 2));
+      // flip angle horisontally
+      degree = 180 - degree; 
+      this.context.rotate(degree * Math.PI / 180);
+      this.context.fillRect(-w/2, -h/2, w, h);
       this.context.stroke();
+      // reset current transformation matrix to the identity matrix
+      this.context.restore();
     }
 
     /** */

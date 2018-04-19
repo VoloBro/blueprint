@@ -917,7 +917,7 @@ declare module BP3D.Floorplanner {
         draw(): void;
         /** */
         private drawWallLabels(wall);
-        private drawRectangle(x, y, w, h);
+        private drawRectangle(x, y, w, h, degree);
         /** */
         private drawWall(wall);
         /** */

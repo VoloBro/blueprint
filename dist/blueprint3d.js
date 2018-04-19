@@ -2708,7 +2708,7 @@ var BP3D;
                 var items = this.floorplan.getItems();
                 if (items) {
                     items.forEach(function (_item) {
-                        var x, y, w, h;
+                        var x, y, w, h, degree;
                         var halfSize = _item.halfSize;
                         var halfX = halfSize.x / 2;
                         var halfY = halfSize.z / 2;
@@ -2718,7 +2718,9 @@ var BP3D;
                         y = y - halfY;
                         w = halfX * 2;
                         h = halfY * 2;
-                        _this.drawRectangle(x, y, w, h);
+                        //get item angle
+                        degree = _item.rotation.y * 180 / Math.PI;
+                        _this.drawRectangle(x, y, w, h, degree);
                     });
                 }
                 ;
@@ -2741,10 +2743,18 @@ var BP3D;
                     this.drawEdgeLabel(wall.frontEdge);
                 }
             };
-            FloorplannerView.prototype.drawRectangle = function (x, y, w, h) {
+            FloorplannerView.prototype.drawRectangle = function (x, y, w, h, degree) {
+                this.context.save();
                 this.context.fillStyle = "#FF0000";
-                this.context.fillRect(x, y, w, h);
+                //setting canvas center to center of rect
+                this.context.translate(x + (w / 2), y + (h / 2));
+                // flip angle horisontally
+                degree = 180 - degree;
+                this.context.rotate(degree * Math.PI / 180);
+                this.context.fillRect(-w / 2, -h / 2, w, h);
                 this.context.stroke();
+                // reset current transformation matrix to the identity matrix
+                this.context.restore();
             };
             /** */
             FloorplannerView.prototype.drawWall = function (wall) {
@@ -2880,7 +2890,7 @@ var BP3D;
                 var offsetY = this.calculateGridOffset(-this.viewmodel.originY);
                 var width = this.canvasElement.width;
                 var height = this.canvasElement.height;
-                this.context.fillStyle = backgroundColor; //"#2767ce";
+                this.context.fillStyle = backgroundColor;
                 this.context.fillRect(0, 0, width, height);
                 for (var x = 0; x <= (width / gridSpacing); x++) {
                     this.drawLine(gridSpacing * x + offsetX, 0, gridSpacing * x + offsetX, height, gridWidth, gridColor);

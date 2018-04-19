@@ -2640,12 +2640,13 @@ var BP3D;
         var gridSpacing = 20; // pixels
         var gridWidth = 1;
         var gridColor = "#f1f1f1";
+        var backgroundColor = "#b7b7b7";
         // room config
         var roomColor = "#f9f9f9";
         // wall config
         var wallWidth = 5;
         var wallWidthHover = 7;
-        var wallColor = "#dddddd";
+        var wallColor = "#f2f2f2"; //"#dddddd"
         var wallColorHover = "#008cba";
         var edgeColor = "#888888";
         var edgeColorHover = "#008cba";
@@ -2720,14 +2721,7 @@ var BP3D;
                         _this.drawRectangle(x, y, w, h);
                     });
                 }
-                // var loadedItems = this.floorplan.getItems();
-                // if (loadedItems){
-                //   loadedItems.forEach((forItem) =>{
-                //     var x = this.viewmodel.convertX(forItem.xpos);
-                //     var y = this.viewmodel.convertY(forItem.zpos);
-                //     this.drawRectangle(x, y);
-                //   })
-                // }
+                ;
             };
             /** */
             FloorplannerView.prototype.drawWallLabels = function (wall) {
@@ -2886,6 +2880,8 @@ var BP3D;
                 var offsetY = this.calculateGridOffset(-this.viewmodel.originY);
                 var width = this.canvasElement.width;
                 var height = this.canvasElement.height;
+                this.context.fillStyle = backgroundColor; //"#2767ce";
+                this.context.fillRect(0, 0, width, height);
                 for (var x = 0; x <= (width / gridSpacing); x++) {
                     this.drawLine(gridSpacing * x + offsetX, 0, gridSpacing * x + offsetX, height, gridWidth, gridColor);
                 }

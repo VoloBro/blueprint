@@ -20,6 +20,7 @@ module BP3D.Floorplanner {
   const gridSpacing = 20; // pixels
   const gridWidth = 1;
   const gridColor = "#f1f1f1";
+  const backgroundColor = "#b7b7b7";
 
   // room config
   const roomColor = "#f9f9f9";
@@ -27,7 +28,7 @@ module BP3D.Floorplanner {
   // wall config
   const wallWidth = 5;
   const wallWidthHover = 7;
-  const wallColor = "#dddddd"
+  const wallColor = "#f2f2f2";//"#dddddd"
   const wallColorHover = "#008cba"
   const edgeColor = "#888888"
   const edgeColorHover = "#008cba"
@@ -104,6 +105,7 @@ module BP3D.Floorplanner {
 
       let items = this.floorplan.getItems();
       if (items){
+
         items.forEach((_item)=>{
           let x,y,w,h
           let halfSize : THREE.Vector3 = _item.halfSize;
@@ -119,24 +121,7 @@ module BP3D.Floorplanner {
           h = halfY * 2;
           this.drawRectangle(x, y, w, h);
         })
-
-
-
-        // var x = this.viewmodel.convertX(forItem.xpos);
-        // var y = this.viewmodel.convertY(forItem.zpos);
-        // this.drawRectangle(x, y);
-
-        // console.log(this.floorplan.item);
-      }
-
-      // var loadedItems = this.floorplan.getItems();
-      // if (loadedItems){
-      //   loadedItems.forEach((forItem) =>{
-      //     var x = this.viewmodel.convertX(forItem.xpos);
-      //     var y = this.viewmodel.convertY(forItem.zpos);
-      //     this.drawRectangle(x, y);
-      //   })
-      // }
+      };
     }
 
     /** */
@@ -346,6 +331,8 @@ module BP3D.Floorplanner {
       var offsetY = this.calculateGridOffset(-this.viewmodel.originY);
       var width = this.canvasElement.width;
       var height = this.canvasElement.height;
+      this.context.fillStyle = backgroundColor;
+      this.context.fillRect(0, 0, width, height);
       for (var x = 0; x <= (width / gridSpacing); x++) {
         this.drawLine(gridSpacing * x + offsetX, 0, gridSpacing * x + offsetX, height, gridWidth, gridColor);
       }
